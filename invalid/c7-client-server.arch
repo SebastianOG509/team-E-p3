@@ -1,0 +1,13 @@
+// Ill-formed: violates C7 (client-server style). The operator panel (T1) requests directly
+// from the translator (T2) instead of a T3 service.
+system FTS
+constituent FTS "Sistema de Transporte Fluvial" owner "Operadores de navegación fluvial"
+component PAN "Panel del Operador Fluvial" in FTS tier T1 kind software
+component CON "Servicio de Consulta de Estado" in FTS tier T3 kind software
+component TRA "Traductor de Modelo Canónico" in FTS tier T2 kind software
+connector E_K30 nature dependency coupling blocking
+  carries "Consulta de estado consolidado de la carga"
+  : PAN -> CON
+connector E_K98 nature dependency coupling blocking
+  carries "Consulta directa al traductor"
+  : PAN -> TRA

@@ -1,0 +1,7 @@
+# One ill-formed model per constraint added or adapted by team E, and the message the language gives.
+# Run: docker run --rm -v "$PWD:/app" lssa-team-e invalid/<model>.arch
+
+c6-events.arch        C6 (new, event-driven style)    E_K99: CUS (T3) publishes an event directly to PAN (T1), which is neither a broker nor a data store
+c7-client-server.arch C7 (new, client-server style)   E_K98: client PAN (T1) requests from TRA (T2), which is not a T3 service
+c5-period.arch        C5 (extended, detection)        EQS6: the first factor of a detection analysis needs a period
+c5-misses.arch        C5 (extended, detection)        EQS6: a detection analysis needs the number of missed heartbeats (misses)

@@ -1,0 +1,857 @@
+{
+ "components": [
+  {
+   "id": "PAN",
+   "label": "Panel del Operador Fluvial",
+   "tier": "T1",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "CAP",
+   "label": "App del Capitán",
+   "tier": "T1",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "TMU",
+   "label": "Terminal de Operación de Muelle",
+   "tier": "T1",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "FGW",
+   "label": "Fluvial Gateway",
+   "tier": "T2",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "TRA",
+   "label": "Traductor de Modelo Canónico",
+   "tier": "T2",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "BRO",
+   "label": "Broker Interno de Eventos",
+   "tier": "T2",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "IOT",
+   "label": "Gateway IoT de Campo",
+   "tier": "T2",
+   "kind": "hardware",
+   "e2_only": false
+  },
+  {
+   "id": "PRO",
+   "label": "Servicio de Programación de Viajes",
+   "tier": "T3",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "TUR",
+   "label": "Servicio de Turnos de Transferencia",
+   "tier": "T3",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "CUS",
+   "label": "Servicio de Custodia",
+   "tier": "T3",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "SEG",
+   "label": "Servicio de Seguimiento de Flota",
+   "tier": "T3",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "CON",
+   "label": "Servicio de Consulta de Estado",
+   "tier": "T3",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "BOF",
+   "label": "Base de Operaciones Fluvial",
+   "tier": "T4",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "ALT",
+   "label": "Almacén de Telemetría",
+   "tier": "T4",
+   "kind": "software",
+   "e2_only": false
+  },
+  {
+   "id": "UAB",
+   "label": "Unidad a Bordo GPS/AIS",
+   "tier": "T5",
+   "kind": "hardware",
+   "e2_only": false
+  },
+  {
+   "id": "SEN",
+   "label": "Sensor de Carga y Sello",
+   "tier": "T5",
+   "kind": "physical",
+   "e2_only": false
+  },
+  {
+   "id": "GRU",
+   "label": "Grúa del Terminal Fluvial",
+   "tier": "T5",
+   "kind": "physical",
+   "e2_only": false
+  },
+  {
+   "id": "BAR",
+   "label": "Barcaza",
+   "tier": "T5",
+   "kind": "physical",
+   "e2_only": false
+  },
+  {
+   "id": "REM",
+   "label": "Remolcador",
+   "tier": "T5",
+   "kind": "physical",
+   "e2_only": false
+  },
+  {
+   "id": "COL",
+   "label": "Cola Persistente de Eventos",
+   "tier": "T4",
+   "kind": "software",
+   "e2_only": true
+  },
+  {
+   "id": "BUF",
+   "label": "Búfer No Volátil de Posiciones",
+   "tier": "T5",
+   "kind": "hardware",
+   "e2_only": true
+  },
+  {
+   "id": "TRS",
+   "label": "Traductor de Modelo Canónico (standby)",
+   "tier": "T2",
+   "kind": "software",
+   "e2_only": true
+  },
+  {
+   "id": "AUD",
+   "label": "Registro de Auditoría",
+   "tier": "T4",
+   "kind": "software",
+   "e2_only": true
+  }
+ ],
+ "connectors": [
+  {
+   "id": "E-K1",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de turno de transferencia en formato canónico (llega por SoS-K4a).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K2",
+   "src": "TRA",
+   "dst": "TUR",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de turno en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K3",
+   "src": "TUR",
+   "dst": "BOF",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Consulta de disponibilidad de muelle y barcaza.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K4",
+   "src": "BOF",
+   "dst": "TUR",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Disponibilidad y programación vigente.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K5",
+   "src": "TUR",
+   "dst": "BOF",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "Registro del turno asignado.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K6",
+   "src": "TUR",
+   "dst": "TRA",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Muelle y horario asignados.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K7",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Confirmación de turno en formato canónico (sale por SoS-K4b).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K8",
+   "src": "PRO",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Arribo estimado y solicitud de atraque.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K9",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de atraque en formato canónico (sale por SoS-K10a).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K10",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Asignación de muelle y ventana operativa (llega por SoS-K10b).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K11",
+   "src": "TRA",
+   "dst": "PRO",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Asignación de muelle y ventana en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K12",
+   "src": "PRO",
+   "dst": "BOF",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "Registro del viaje con muelle y ventana asignados.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K13",
+   "src": "PAN",
+   "dst": "PRO",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Creación o cambio de viajes y asignación de barcazas.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K14",
+   "src": "PRO",
+   "dst": "PAN",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Itinerario y estado de los viajes.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K15",
+   "src": "PRO",
+   "dst": "CAP",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Itinerario y ventana de atraque.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K16",
+   "src": "TUR",
+   "dst": "TMU",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Turnos de transferencia programados.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K17",
+   "src": "GRU",
+   "dst": "IOT",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "Movimientos de carga ejecutados.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K18",
+   "src": "SEN",
+   "dst": "IOT",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Estado del sello y lecturas de carga.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K19",
+   "src": "TMU",
+   "dst": "CUS",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Traspaso de carga registrado (emisor, receptor, estado del sello declarado por el operador de muelle).",
+   "info_e2": "Traspaso de carga registrado (emisor, receptor, estado del sello declarado por el operador de muelle). Entrega 2: lleva credenciales y datos para validar el origen del traspaso (E-QS4).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K20",
+   "src": "CUS",
+   "dst": "BOF",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "Registro de custodia.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K21",
+   "src": "CUS",
+   "dst": "BRO",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Traspaso de custodia confirmado.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K22",
+   "src": "UAB",
+   "dst": "IOT",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Posición, rumbo y velocidad. Enlace intermitente río–tierra (celular o satelital); la Unidad a Bordo no almacena lecturas.",
+   "info_e2": "Posición, rumbo y velocidad. Enlace intermitente río–tierra (celular o satelital); la Unidad a Bordo no almacena lecturas. Entrega 2: lleva además un latido cada 10 s y la identidad y secuencia de cada posición (E-QS2, E-QS6).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K23",
+   "src": "IOT",
+   "dst": "SEG",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Telemetría normalizada (posiciones, estado del sello, movimientos de grúa).",
+   "info_e2": "Telemetría normalizada (posiciones, estado del sello, movimientos de grúa). Entrega 2: lleva latidos, identidad y secuencia (E-QS2, E-QS6).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K24",
+   "src": "SEG",
+   "dst": "ALT",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "Histórico de posiciones y lecturas.",
+   "info_e2": "Histórico de posiciones y lecturas. Entrega 2: registra por identidad y secuencia, sin duplicados (E-QS2).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K25",
+   "src": "SEG",
+   "dst": "BRO",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Posición, estado de navegación y novedades reportadas.",
+   "info_e2": "Posición, estado de navegación y novedades reportadas. Entrega 2: incluye el estado de vigencia («vigente» o «sin telemetría vigente, causa no confirmada») (E-QS6).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K26",
+   "src": "BRO",
+   "dst": "TRA",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Eventos de custodia y de navegación.",
+   "info_e2": "Eventos de custodia y de navegación. Entrega 2: entrega desde la Cola Persistente, con prioridad (E-QS1).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K27",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Traspaso de custodia en formato canónico (sale por SoS-K15).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K28",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "event_notification",
+   "coupling": "supply",
+   "info": "Posición y estado de navegación en formato canónico (sale por SoS-K16).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K29",
+   "src": "BRO",
+   "dst": "PAN",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Alertas y eventos para el operador.",
+   "info_e2": "Alertas y eventos para el operador. Entrega 2: además lleva el aviso de estado de servicio, alertas de ataque y vigencia.",
+   "e2_only": false
+  },
+  {
+   "id": "E-K30",
+   "src": "PAN",
+   "dst": "CON",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Consulta de estado consolidado de la carga.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K31",
+   "src": "CON",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Consulta de estado consolidado en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K32",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Consulta de estado consolidado en formato canónico (sale por SoS-K19a).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K33",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Estado consolidado de la carga consultada (llega por SoS-K19b).",
+   "info_e2": "Estado consolidado de la carga consultada (llega por SoS-K19b). Entrega 2: el estado consolidado puede traer ETA estimadas (P4).",
+   "e2_only": false
+  },
+  {
+   "id": "E-K34",
+   "src": "TRA",
+   "dst": "CON",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Estado consolidado en modelo interno.",
+   "info_e2": "Estado consolidado en modelo interno. Entrega 2: igual que E-K33.",
+   "e2_only": false
+  },
+  {
+   "id": "E-K35",
+   "src": "CON",
+   "dst": "PAN",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Estado consolidado para mostrar al operador.",
+   "info_e2": "Estado consolidado para mostrar al operador. Entrega 2: muestra además si el dato es estimado o real y la fecha del último reporte real.",
+   "e2_only": false
+  },
+  {
+   "id": "E-K36",
+   "src": "REM",
+   "dst": "UAB",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Rumbo, velocidad y estado de navegación del remolcador.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K37",
+   "src": "BAR",
+   "dst": "UAB",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "Estado y calado de la barcaza.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K38",
+   "src": "CAP",
+   "dst": "SEG",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "Novedades reportadas por el capitán (incidentes, retrasos, condiciones del río).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K39",
+   "src": "TUR",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de capacidad de camiones para retirar carga descargada de barcazas (puerto, unidades, ventana de retiro), en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K40",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de retiro en formato canónico (sale por SoS-K28a).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K41",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Confirmación de vehículos asignados y cita de retiro, o rechazo (llega por SoS-K28b).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K42",
+   "src": "TRA",
+   "dst": "TUR",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Confirmación de vehículos y cita de retiro, o rechazo, en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K43",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de capacidad de convoy fluvial para unidades liberadas en el puerto (llega por SoS-K31a).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K44",
+   "src": "TRA",
+   "dst": "PRO",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "Solicitud de capacidad de convoy fluvial en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K45",
+   "src": "PRO",
+   "dst": "TRA",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Barcazas asignadas, muelle y ventana de cargue, o rechazo, en modelo interno.",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K46",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "Confirmación de barcazas, muelle y ventana de cargue, o rechazo, en formato canónico (sale por SoS-K31b).",
+   "info_e2": null,
+   "e2_only": false
+  },
+  {
+   "id": "E-K47",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "aviso de estado de servicio en formato canónico (llega por SoS-K35).",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K48",
+   "src": "TRA",
+   "dst": "BRO",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "aviso de estado de servicio en modelo interno.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K49",
+   "src": "BRO",
+   "dst": "TUR",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "estado de servicio; planificar con ETA estimada y holgura ≥ 30 min, o reanudar.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K50",
+   "src": "BRO",
+   "dst": "PRO",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "estado de servicio; despachar a su hora con composición parcial (P5), o reanudar.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K51",
+   "src": "BRO",
+   "dst": "CON",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "estado de servicio; limitar SoS- K19a a ≤ 2 intentos/s o iniciar la reconciliación.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K52",
+   "src": "CON",
+   "dst": "TUR",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "posiciones y ETA estimadas de camiones hacia el terminal, con incertidumbre y fecha del último reporte real.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K53",
+   "src": "CON",
+   "dst": "CUS",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "estado consolidado para reconciliar custodia tras el restablecimiento.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K54",
+   "src": "CON",
+   "dst": "PRO",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "estado consolidado y ETA estimadas para planificar y reconciliar viajes.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K55",
+   "src": "BRO",
+   "dst": "COL",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "evento de custodia o navegación a persistir, con su prioridad.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K56",
+   "src": "COL",
+   "dst": "BRO",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "eventos pendientes de entrega, en orden de prioridad.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K57",
+   "src": "UAB",
+   "dst": "BUF",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "posición con identidad, secuencia y hora original, guardada antes de enviarla.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K58",
+   "src": "BUF",
+   "dst": "IOT",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "rezago de posiciones retenidas, hasta 10/s por convoy al reconectar.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K59",
+   "src": "SEG",
+   "dst": "IOT",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "acuse duradero de las posiciones persistidas (identidad y secuencia).",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K60",
+   "src": "IOT",
+   "dst": "BUF",
+   "nature": "data_flow",
+   "coupling": "sink",
+   "info": "acuse que autoriza liberar las posiciones retenidas.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K61",
+   "src": "TRA",
+   "dst": "TRS",
+   "nature": "data_flow",
+   "coupling": "supply",
+   "info": "réplica del estado de las transacciones en curso.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K62",
+   "src": "FGW",
+   "dst": "TRA",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "sondeo de salud de la instancia primaria (cada 2 s).",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K63",
+   "src": "TRA",
+   "dst": "FGW",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "estado de salud de la instancia primaria.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K64",
+   "src": "FGW",
+   "dst": "TRS",
+   "nature": "dependency",
+   "coupling": "blocking",
+   "info": "sondeo de salud del standby y tráfico redirigido tras la conmutación.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K65",
+   "src": "TRS",
+   "dst": "FGW",
+   "nature": "data_flow",
+   "coupling": "blocking",
+   "info": "estado de salud y respuestas del standby.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K66",
+   "src": "FGW",
+   "dst": "AUD",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "evidencia de cada decisión de verificación (origen, motivo, correlación).",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K67",
+   "src": "CUS",
+   "dst": "AUD",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "evidencia de la validación de origen de cada traspaso (E-K19).",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K68",
+   "src": "TUR",
+   "dst": "AUD",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "evidencia de la correlación entre SoS-K28b y la solicitud SoS-K28a pendiente.",
+   "info_e2": null,
+   "e2_only": true
+  },
+  {
+   "id": "E-K69",
+   "src": "FGW",
+   "dst": "BRO",
+   "nature": "event_notification",
+   "coupling": "sink",
+   "info": "alerta agrupada de ataque (≤ 30 s desde el primer rechazo).",
+   "info_e2": null,
+   "e2_only": true
+  }
+ ]
+}

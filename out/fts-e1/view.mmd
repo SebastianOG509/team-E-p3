@@ -1,0 +1,98 @@
+flowchart LR
+  subgraph CPS["Sistema de Gestión de Puertos del Caribe"]
+    CGW["Caribbean Port Gateway (T2)"]
+  end
+  subgraph PPS["Sistema de Gestión de Puertos del Pacífico"]
+    PGW["Pacific Port Gateway (T2)"]
+  end
+  subgraph RTS["Sistema de Transporte Carretero"]
+    RGW["Road Gateway (T2)"]
+  end
+  subgraph RLS["Sistema de Transporte Férreo"]
+    LGW["Rail Gateway (T2)"]
+  end
+  subgraph FTS["Sistema de Transporte Fluvial"]
+    PAN["Panel del Operador Fluvial (T1)"]
+    CAP["App del Capitán (T1)"]
+    TMU["Terminal de Operación de Muelle (T1)"]
+    FGW["Fluvial Gateway (T2)"]
+    TRA["Traductor de Modelo Canónico (T2)"]
+    BRO["Broker Interno de Eventos (T2)"]
+    IOT["Gateway IoT de Campo (T2)"]
+    PRO["Servicio de Programación de Viajes (T3)"]
+    TUR["Servicio de Turnos de Transferencia (T3)"]
+    CUS["Servicio de Custodia (T3)"]
+    SEG["Servicio de Seguimiento de Flota (T3)"]
+    CON["Servicio de Consulta de Estado (T3)"]
+    BOF[("Base de Operaciones Fluvial (T4)")]
+    ALT[("Almacén de Telemetría (T4)")]
+    UAB["Unidad a Bordo GPS/AIS (T5)"]
+    SEN["Sensor de Carga y Sello (T5)"]
+    GRU["Grúa del Terminal Fluvial (T5)"]
+    BAR["Barcaza (T5)"]
+    REM["Remolcador (T5)"]
+  end
+  subgraph NCS["Sistema de Coordinación Nacional"]
+    NCG["National Coordination Gateway (T2)"]
+  end
+  RGW -->|SoS_K4a| FGW
+  FGW -->|SoS_K4b| RGW
+  FGW -->|SoS_K10a| CGW
+  CGW -->|SoS_K10b| FGW
+  FGW -->|SoS_K15| NCG
+  FGW -->|SoS_K16| NCG
+  FGW -->|SoS_K19a| NCG
+  NCG -->|SoS_K19b| FGW
+  FGW -->|SoS_K28a| RGW
+  RGW -->|SoS_K28b| FGW
+  CGW -->|SoS_K31a| FGW
+  FGW -->|SoS_K31b| CGW
+  NCG -->|SoS_K35| FGW
+  RGW -->|SoS_K5| NCG
+  NCG -->|SoS_K32| CGW
+  FGW -->|E_K1| TRA
+  TRA -->|E_K2| TUR
+  TUR -->|E_K3| BOF
+  BOF -->|E_K4| TUR
+  TUR -->|E_K5| BOF
+  TUR -->|E_K6| TRA
+  TRA -->|E_K7| FGW
+  PRO -->|E_K8| TRA
+  TRA -->|E_K9| FGW
+  FGW -->|E_K10| TRA
+  TRA -->|E_K11| PRO
+  PRO -->|E_K12| BOF
+  PAN -->|E_K13| PRO
+  PRO -->|E_K14| PAN
+  PRO -->|E_K15| CAP
+  TUR -->|E_K16| TMU
+  GRU -->|E_K17| IOT
+  SEN -->|E_K18| IOT
+  TMU -->|E_K19| CUS
+  CUS -->|E_K20| BOF
+  CUS -->|E_K21| BRO
+  UAB -->|E_K22| IOT
+  IOT -->|E_K23| SEG
+  SEG -->|E_K24| ALT
+  SEG -->|E_K25| BRO
+  BRO -->|E_K26| TRA
+  TRA -->|E_K27| FGW
+  TRA -->|E_K28| FGW
+  BRO -->|E_K29| PAN
+  PAN -->|E_K30| CON
+  CON -->|E_K31| TRA
+  TRA -->|E_K32| FGW
+  FGW -->|E_K33| TRA
+  TRA -->|E_K34| CON
+  CON -->|E_K35| PAN
+  REM -->|E_K36| UAB
+  BAR -->|E_K37| UAB
+  CAP -->|E_K38| SEG
+  TUR -->|E_K39| TRA
+  TRA -->|E_K40| FGW
+  FGW -->|E_K41| TRA
+  TRA -->|E_K42| TUR
+  FGW -->|E_K43| TRA
+  TRA -->|E_K44| PRO
+  PRO -->|E_K45| TRA
+  TRA -->|E_K46| FGW

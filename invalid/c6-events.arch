@@ -1,0 +1,13 @@
+// Ill-formed: violates C6 (event-driven style). Custody publishes an event directly to the
+// operator panel instead of the broker.
+system FTS
+constituent FTS "Sistema de Transporte Fluvial" owner "Operadores de navegación fluvial"
+component CUS "Servicio de Custodia" in FTS tier T3 kind software
+component PAN "Panel del Operador Fluvial" in FTS tier T1 kind software
+component BRO "Broker Interno de Eventos" in FTS tier T2 kind software role broker
+connector E_K21 nature event_notification coupling sink
+  carries "Traspaso de custodia confirmado"
+  : CUS -> BRO
+connector E_K99 nature event_notification coupling sink
+  carries "Traspaso de custodia confirmado, enviado directo al panel"
+  : CUS -> PAN

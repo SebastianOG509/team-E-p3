@@ -1,0 +1,7 @@
+// Ill-formed: violates C5 (extended). A detection analysis starts at a component without period.
+system FTS
+constituent FTS "Sistema de Transporte Fluvial" owner "Operadores de navegación fluvial"
+component UAB "Unidad a Bordo GPS/AIS" in FTS tier T5 kind hardware
+component SEG "Servicio de Seguimiento de Flota" in FTS tier T3 kind software latency 5000
+analysis EQS6 scenario "E-QS6 (detección del silencio)" detection misses 3 target 35000 :
+  UAB, SEG
